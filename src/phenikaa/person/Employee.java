@@ -14,16 +14,12 @@ public final class Employee {
     public Employee() {
     }
 
-    public Employee(String name, String address, int eid, String gender, String department, String position,
+    public Employee(String name, String address, String gender, String department, String position,
             String phoneNumber, Date dob, Date joinTime,
-            double salary, double commission, double allowance) throws phenikaa.exception.pkaException {
-
-        // check xem eid da co trong list chua
-        if (employeeList.employees.stream().anyMatch(x -> (x.getEid() == eid)))
-            throw new phenikaa.exception.pkaException("Nhân viên này đã tồn tại!");
+            double salary, double commission, double allowance) {
         this.name = name;
         this.address = address;
-        this.eid = eid;
+        this.eid = generateID.creRandomID();
         this.gender = gender;
         this.department = department;
         this.position = position;
@@ -77,6 +73,7 @@ public final class Employee {
     public void setCommission(double commission) {
         this.commission = commission;
     }
+
     public void setJoinTime(Date date) {
         this.joinTime = date;
     }
@@ -143,17 +140,12 @@ public final class Employee {
         return workDuration;
     }
 
-
     // setter
-    public void changeInfo(String name, String address, int eid, String gender, String department, String position,
+    public void changeInfo(String name, String address, String gender, String department, String position,
             String phoneNumber, Date dob, Date joinTime,
-            double salary, double commission, double allowance) throws phenikaa.exception.pkaException {
-        if (employeeList.employees.stream().anyMatch(x -> (x.getEid() == eid) && (eid != this.eid))
-        )
-            throw new phenikaa.exception.pkaException("Nhân viên này đã tồn tại!");
+            double salary, double commission, double allowance) {
         this.name = name;
         this.address = address;
-        this.eid = eid;
         this.gender = gender;
         this.department = department;
         this.position = position;
@@ -166,6 +158,10 @@ public final class Employee {
         this.commission = commission;
         this.allowance = allowance;
     }
+
+    // public static boolean isValid() {
+    //     return true;
+    // }
 
     @Override
     public String toString() {

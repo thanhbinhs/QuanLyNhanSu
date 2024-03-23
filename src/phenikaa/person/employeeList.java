@@ -25,7 +25,6 @@ public interface employeeList {
     public static DefaultListModel<Employee> getListModelByName(String name) {
         ArrayList<Employee> list = employeeList.employees.stream().filter(x -> name.equals(x.getName()))
                 .collect(Collectors.toCollection(ArrayList::new));
-        System.out.println(list.isEmpty());
         DefaultListModel<Employee> result = new DefaultListModel<>();
         for (Employee emp : list) {
             result.addElement(emp);
@@ -33,20 +32,12 @@ public interface employeeList {
         return result;
     }
 
-    public static DefaultListModel<Employee> getListModelByEid(String eid) {
-        Employee eidSearch = employeeList.employees.stream().filter(x -> eid.equals(x.getEid())).findAny().orElse(null);
+    public static DefaultListModel<Employee> getListModelByEid(int eid) {
+        Employee eidSearch = employeeList.employees.stream().filter(x -> eid == x.getEid()).findAny()
+                .orElse(null);
         DefaultListModel<Employee> result = new DefaultListModel<>();
         result.addElement(eidSearch);
         return result;
     }
 
-    public static DefaultListModel<Employee> getListModelByDepartment(String department) {
-        ArrayList<Employee> list = employeeList.employees.stream().filter(x -> x.getDepartment().equals(department))
-                .collect(Collectors.toCollection(ArrayList::new));
-        DefaultListModel<Employee> resutl = new DefaultListModel<>();
-        for (Employee emp : list) {
-            resutl.addElement(emp);
-        }
-        return resutl;
-    }
 }

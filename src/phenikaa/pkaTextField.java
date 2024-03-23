@@ -24,8 +24,8 @@ public final class pkaTextField {
     public static JTextField getTextField(int x, int y, int w, int h) {
         JTextField field = new JTextField();
         field.setBounds(x, y, w, h);
-        field.setBackground(new Color(0xF5E8dd));
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setBackground(new Color(0xf2f2f2));
+        field.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         field.setForeground(Color.BLACK);
         return field;
     }
@@ -33,10 +33,10 @@ public final class pkaTextField {
     public static JFormattedTextField getNumberField(int x, int y, int w, int h) {
         JFormattedTextField field = new JFormattedTextField(creNumberFormat());
         field.setBounds(x, y, w, h);
-        field.setBackground(new Color(0xF5E8dd));
+        field.setBackground(new Color(0xf2f2f2));
         field.setForeground(Color.BLACK);
         field.setValue(0);
-        field.setFont(new Font("Arial", Font.PLAIN, 14));
+        field.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         field.addKeyListener(new KeyListener() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -77,9 +77,9 @@ public final class pkaTextField {
         JSpinner dateSpinner = new JSpinner(model);
         JSpinner.DateEditor editor = new JSpinner.DateEditor(dateSpinner, "dd/MM/yyyy");
         JFormattedTextField textField = editor.getTextField();
-        textField.setBackground(new Color(0xF5E8dd));
+        textField.setBackground(new Color(0xf2f2f2));
         textField.setForeground(Color.BLACK);
-        textField.setFont(new Font("Arial", Font.PLAIN, 14));
+        textField.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         dateSpinner.setBounds(x, y, w, h);
         dateSpinner.setEditor(editor);
         return dateSpinner;
@@ -87,10 +87,10 @@ public final class pkaTextField {
 
     public static JFormattedTextField getPhoneField(int x, int y, int w, int h) {
         JFormattedTextField phone = new JFormattedTextField(creMask());
-        phone.setBackground(new Color(0xF5E8dd));
+        phone.setBackground(new Color(0xf2f2f2));
         phone.setBounds(x, y, w, h);
         phone.setForeground(Color.BLACK);
-        phone.setFont(new Font("Arial", Font.PLAIN, 14));
+        phone.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         phone.addKeyListener(new KeyListener() {
 
             @Override
@@ -128,10 +128,10 @@ public final class pkaTextField {
     public static JList<Employee> creListField(int x, int y, int w, int h) {
         JList<Employee> items = new JList<>();
         items.setBounds(x, y, w, h);
-        items.setBackground(new Color(0xF5E8dd));
-        items.setSelectionBackground(new Color(0xf5e8dd));
+        items.setBackground(new Color(0xf2f2f2));
+        items.setSelectionBackground(new Color(0xf2f2f2));
         items.setForeground(Color.BLACK);
-        items.setFont(new Font("Arial", Font.PLAIN, 14));
+        items.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         items.setLayoutOrientation(JList.VERTICAL);
         items.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return items;

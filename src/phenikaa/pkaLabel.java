@@ -14,12 +14,12 @@ public final class pkaLabel {
         JLabel label = new JLabel(name);
         label.setBounds(x, y, w, h);
         label.setLayout(null);
-        label.setBackground(new Color(0xB5C0D0));
+        label.setBackground(new Color(0xcccccc));
         label.setOpaque(true);
         label.setVerticalTextPosition(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.LEFT);
         label.setForeground(Color.BLACK);
-        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setFont(new Font("Times New Roman", Font.PLAIN, 12));
         return label;
     }
 
