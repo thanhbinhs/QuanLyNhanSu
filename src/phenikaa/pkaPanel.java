@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import phenikaa.person.*;
+import phenikaa.DBConfig;
 
 public final class pkaPanel extends JPanel {
 
@@ -111,15 +112,12 @@ public final class pkaPanel extends JPanel {
                 // danh sach
                 employeeList.employees.add(newEmployee);
                 try {
-                addEmployee(DriverManager.getConnection("jdbc:mysql://localhost:3306/employee",
-                "root", "131217123"), newEmployee);
-                System.out.println("Thêm nhân viên thành công!");
+                    addEmployee(DriverManager.getConnection(DBConfig.DB_URL, DBConfig.USER, DBConfig.PASS),
+                            newEmployee);
+                    System.out.println("Thêm nhân viên thành công!");
                 } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+                    sqlException.printStackTrace();
                 }
-                // try(Connection conn =
-                // DriverManager.getConnection("jdbc:mysql://localhost:3306/employee", "root",
-                // "131217123"));
 
                 // thong bao them nhan vien thanh cong
                 JOptionPane.showMessageDialog(pkaFrame.CENTER_PANEL, "Thêm nhân viên thành công!", "Thông báo ",
@@ -248,21 +246,15 @@ public final class pkaPanel extends JPanel {
                 int confirm = JOptionPane.showConfirmDialog(pkaFrame.CENTER_PANEL, "Bạn có chắc chắn muốn xóa?",
                         "Xác nhận", JOptionPane.YES_NO_OPTION);
                 if (confirm == JOptionPane.YES_OPTION) {// xoa employee duoc chon
-                                                        try {
-                                                        Connection conn =
-                                                        DriverManager.getConnection("jdbc:mysql://localhost:3306/employee",
-                                                        "root",
-                                                        "131217123");
-                                                        Employee employee =
-                                                        employeeList.employees.get(pkaScrollPane.list.getSelectedIndex());
-                                                        String sql = "DELETE FROM employee WHERE employee_id = ?";
-                                                        PreparedStatement statement = conn.prepareStatement(sql);
-                                                        statement.setInt(1, employee.getEid());
-                                                        statement.executeUpdate();
-                                                        System.out.println("Xóa nhân viên thành công!");
-                                                        } catch (SQLException sqlException) {
-                                                        sqlException.printStackTrace();
-                                                        }
+                    try {
+                        Connection conn = DriverManager.getConnection(DBConfig.DB_URL,
+                                DBConfig.USER,
+                                DBConfig.PASS);
+                        deleteEmployee(conn, employeeList.employees.get(pkaScrollPane.list.getSelectedIndex()));
+                        System.out.println("Xóa nhân viên thành công!");
+                    } catch (SQLException sqlException) {
+                        sqlException.printStackTrace();
+                    }
 
                     // xoa object ra khoi danh sach
                     employeeList.employees.remove((Employee) pkaScrollPane.list.getSelectedValue());
@@ -302,12 +294,12 @@ public final class pkaPanel extends JPanel {
                         ((Number) EDIT_FIELD.tf_allowance.getValue()).doubleValue());
 
                 try {
-                updateEmployee(DriverManager.getConnection("jdbc:mysql://localhost:3306/employee",
-                "root", "131217123") ,
-                employeeList.employees.get(pkaScrollPane.list.getSelectedIndex()));
-                System.out.println("Sửa nhân viên thành công!");
+                    updateEmployee(DriverManager.getConnection(DBConfig.DB_URL,
+                            DBConfig.USER, DBConfig.PASS),
+                            employeeList.employees.get(pkaScrollPane.list.getSelectedIndex()));
+                    System.out.println("Sửa nhân viên thành công!");
                 } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
+                    sqlException.printStackTrace();
                 }
                 // thong bao cap nhat thong tin thanh cong
                 JOptionPane.showMessageDialog(pkaFrame.CENTER_PANEL, "Cập nhật thông tin hoàn tất!", "Thông báo",
@@ -465,30 +457,23 @@ public final class pkaPanel extends JPanel {
         try {
             String sql = "INSERT INTO employee (employee_id, name, date_of_birth, gender, address, phone_number, salary, join_date, department, position, commission, allowance, work_duration) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql);
-
             // Set các giá trị cho các cột trong câu lệnh SQL từ đối tượng Employee
             statement.setInt(1, employee.getEid()); // Lấy mã nhân viên
             statement.setString(2, employee.getName()); // Lấy tên
-            statement.setDate(3, java.sql.Date
-                    .valueOf(employee.getDOB().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate())); // Lấy
-                                                                                                                     // ngày
-                                                                                                                     // sinh
+            statement.setDate(3, java.sql.Date.valueOf(
+                employee.getDOB().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()));  // Lấy ngày sinh
             statement.setString(4, employee.getGender()); // Lấy giới tính
             statement.setString(5, employee.getAddress()); // Lấy địa chỉ
             statement.setString(6, employee.getPhoneNumber()); // Lấy số điện thoại
             statement.setBigDecimal(7, BigDecimal.valueOf(employee.getSalary())); // Lấy lương
             statement.setDate(8, java.sql.Date.valueOf(
-                    employee.getJoinTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate())); // Lấy
-                                                                                                                 // ngày
-                                                                                                                 // tham
-                                                                                                                 // gia
+                employee.getJoinTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate()));                                                                                // gia
             statement.setString(9, employee.getDepartment()); // Lấy phòng ban
             statement.setString(10, employee.getPosition()); // Lấy id vị trí
             statement.setBigDecimal(11, BigDecimal.valueOf(employee.getCommission())); // Lấy hoa hồng
             statement.setBigDecimal(12, BigDecimal.valueOf(employee.getAllowance()));// Lấy phụ cấp
-            statement.setDate(13, java.sql.Date.valueOf(LocalDate.now().minusYears(employee.getJoinTime().toInstant()
-                    .atZone(java.time.ZoneId.systemDefault()).toLocalDate().getYear()))); // Lấy thời gian làm việc
-
+            statement.setDate(13, java.sql.Date.valueOf(LocalDate.now().minusYears(
+                employee.getJoinTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().getYear()))); // Lấy thời gian làm việc
             // Thực hiện câu lệnh SQL
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -503,8 +488,8 @@ public final class pkaPanel extends JPanel {
             java.util.Date dob = employee.getDOB();
             java.util.Date joinTime = employee.getJoinTime();
 
-            // Set các giá trị cho các cột trong câu lệnh SQL từ đối tượng Employee // Lấy
-            // mã nhân viên
+            // Set các giá trị cho các cột trong câu lệnh SQL từ đối tượng Employee
+            // Lấy mã nhân viên
             statement.setString(1, employee.getName()); // Lấy tên
             statement.setDate(2, new java.sql.Date(dob.getTime())); // Lấy ngày sinh
             statement.setString(3, employee.getGender()); // Lấy giới tính
@@ -520,11 +505,20 @@ public final class pkaPanel extends JPanel {
             cal.setTime(employee.getJoinTime());
             int joinYear = cal.get(Calendar.YEAR);
             statement.setDate(12, java.sql.Date.valueOf(LocalDate.now().minusYears(joinYear)));
-            // statement.setDate(12,
-            // java.sql.Date.valueOf(LocalDate.now().minusYears(employee.getJoinTime().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().getYear())));
-            // // Lấy thời gian làm việc
+            // Lấy thời gian làm việc
             statement.setInt(13, employee.getEid());
             // Thực hiện câu lệnh SQL
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteEmployee(Connection conn, Employee employee) {
+        try {
+            String sql = "DELETE FROM employee WHERE employee_id=?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, employee.getEid());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

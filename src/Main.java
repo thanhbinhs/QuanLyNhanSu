@@ -3,26 +3,27 @@ import javax.swing.plaf.nimbus.State;
 
 import phenikaa.person.Employee;
 import phenikaa.person.employeeList;
+import phenikaa.DBConfig;
 import phenikaa.*;
 
 import java.math.BigDecimal;
+import java.sql.Driver;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.sql.Date;
+import java.time.LocalDate;
+
 
 public class Main {
-    static final String DB_URL = "jdbc:mysql://localhost:3306";
-    static final String USER = "root";
-    static final String PASS = "131217123";
+
 
     public static void main(String[] args) {
 
-        try(Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
+        try(Connection con = DriverManager.getConnection(DBConfig.DB_URL, DBConfig.USER, DBConfig.PASS);
         Statement stmt = con.createStatement();) {
         stmt.execute("USE employee");
         System.out.println("Connected to database");
